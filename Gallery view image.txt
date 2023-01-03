@@ -1,0 +1,100 @@
+Q> display the multiple images using gallery view.
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:scaleType="fitXY" />
+
+    <Gallery
+        android:id="@+id/languagesGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:animationDuration="2000"
+        android:padding="10dp"
+        android:spacing="5dp" />
+</LinearLayout>
+
+
+package com.example.assi2_1galleryview;
+
+import android.os.Bundle;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Gallery simpleGallery;
+    GalleryAdapter galleryadapter;
+    ImageView selectedImageView;
+    int[] images =
+            {
+                    R.drawable.img,
+                    R.drawable.img_3,
+                    R.drawable.img_4,
+                    R.drawable.img_5
+            };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        simpleGallery = (Gallery) findViewById(R.id.languagesGallery);
+        selectedImageView = (ImageView) findViewById(R.id.imageView);
+        galleryadapter = new GalleryAdapter(getApplicationContext(), images);
+        simpleGallery.setAdapter(galleryadapter);
+        simpleGallery.setOnItemClickListener((parent, view, position, id) ->
+        {
+            selectedImageView.setImageResource(images[position]);
+        });
+    }
+}
+
+***  GalleryAdapter
+
+package com.example.assi2_1galleryview;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Gallery;
+import android.widget.ImageView;
+
+public class GalleryAdapter extends BaseAdapter {
+
+    private final Context context;
+    private final int[] images;
+
+    public GalleryAdapter(Context c, int[] images) {
+        context = c;
+        this.images = images;
+    }
+
+    public int getCount() {
+        return images.length;
+    }
+    public Object getItem(int position) {
+        return position;
+    }
+    public long getItemId(int position) {
+        return position;
+    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ImageView imageView = new ImageView(context);
+        imageView.setImageResource(images[position]);
+        imageView.setLayoutParams(new Gallery.LayoutParams(200, 200));
+        return imageView;
+    }
+}
